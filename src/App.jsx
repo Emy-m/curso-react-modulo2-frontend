@@ -1,9 +1,9 @@
-import Button from "@mui/material/Button";
+import Header from "./components/Header";
 
 function App() {
   return (
     <>
-      <Button variant="contained">Text</Button>
+      <Header handleSearch={(value) => console.log(value)} />
     </>
   );
 }
