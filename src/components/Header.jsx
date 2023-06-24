@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { PropTypes } from "prop-types";
+import { useNavigate } from "react-router";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,6 +55,7 @@ Header.propTypes = {
 };
 
 export default function Header({ handleSearch }) {
+  const nav = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -79,6 +81,7 @@ export default function Header({ handleSearch }) {
               inputProps={{ "aria-label": "search" }}
               onChange={(e) => {
                 handleSearch(e.target.value);
+                nav("/");
               }}
             />
           </Search>
