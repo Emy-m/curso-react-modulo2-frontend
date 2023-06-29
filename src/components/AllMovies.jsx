@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Grid } from "@mui/material";
 import MovieCardSkeleton from "./MovieCardSkeleton";
 import MovieModel from "../../MovieModel";
+import Movie from "./Movie";
 
 AllMovies.propTypes = {
   filter: PropTypes.string,
@@ -77,7 +78,7 @@ export default function AllMovies({ filter }) {
           display="flex"
           justifyContent="center"
         >
-          {movie.title}
+          <Movie movie={movie} />
         </Grid>
       );
     });

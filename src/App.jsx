@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./components/Header";
 import Routes from "./components/Routes";
 import { Container } from "@mui/material";
+import AddMovieButton from "./components/AddMovieButton";
 
 function App() {
   const [filterText, setFilterText] = useState("");
@@ -22,6 +23,7 @@ function App() {
         }}
       >
         <Routes filter={filterText} />
+        <AddMovieButton />
       </Container>
     </>
   );
