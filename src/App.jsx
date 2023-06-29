@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Routes from "./components/Routes";
+import { Container } from "@mui/material";
 
 function App() {
   const [filterText, setFilterText] = useState("");
@@ -12,7 +13,16 @@ function App() {
           height: "80px",
         }}
       ></div>
-      <Routes filter={filterText} />
+      <Container
+        maxWidth="x"
+        sx={{
+          background: "gray",
+          minHeight: "300px",
+          padding: "2.5%",
+        }}
+      >
+        <Routes filter={filterText} />
+      </Container>
     </>
   );
 }
