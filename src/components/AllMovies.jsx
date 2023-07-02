@@ -44,6 +44,14 @@ export default function AllMovies({ filter }) {
     }
   };
 
+  const deleteMovie = async (id) => {
+    const response = await movieModel.deleteMovie(id);
+
+    if (!response.error) {
+      fetchMovies();
+    }
+  };
+
   const renderSkeleton = () => {
     return Array.from({ length: 8 }).map((item, index) => {
       return (
@@ -78,7 +86,7 @@ export default function AllMovies({ filter }) {
           display="flex"
           justifyContent="center"
         >
-          <Movie movie={movie} />
+          <Movie movie={movie} onDelete={deleteMovie} />
         </Grid>
       );
     });

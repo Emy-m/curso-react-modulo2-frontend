@@ -48,17 +48,25 @@ export default function MovieForm({ movie }) {
   };
 
   const onSubmit = (data) => {
-    data.id = movie.id;
-
-    if (movie.image != data.image) {
-      data.image = data.image[0];
-    }
-
     const movieModel = new MovieModel();
-    movieModel
-      .updateMovie(data)
-      .then(() => nav("/"))
-      .catch((e) => console.log(e));
+    if (movie) {
+      data.id = movie.id;
+
+      if (movie.image != data.image) {
+        data.image = data.image[0];
+      }
+
+      movieModel
+        .updateMovie(data)
+        .then(() => nav("/"))
+        .catch((e) => console.log(e));
+    } else {
+      data.image = data.image[0];
+      movieModel
+        .addMovie(data)
+        .then(() => nav("/"))
+        .catch((e) => console.log(e));
+    }
   };
 
   return (
@@ -75,7 +83,7 @@ export default function MovieForm({ movie }) {
           variant="filled"
           label="Title"
           {...register("title", { required: true })}
-          defaultValue={movie.title}
+          defaultValue={movie?.title}
           error={!!errors.title}
           helperText={errors.title && "This field is required"}
         />
@@ -83,8 +91,9 @@ export default function MovieForm({ movie }) {
         <StyledTextField
           variant="filled"
           label="Year"
+          type="number"
           {...register("year", { required: true })}
-          defaultValue={movie.year}
+          defaultValue={movie?.year}
           error={!!errors.year}
           helperText={errors.year && "This field is required"}
         />
@@ -95,7 +104,7 @@ export default function MovieForm({ movie }) {
             label="Genre"
             select
             {...register("genre", { required: true })}
-            defaultValue={movie.genre}
+            defaultValue={movie?.genre ? movie.genre : genres[0]}
             error={!!errors.genre}
             helperText={errors.genre && "This field is required"}
           >
@@ -107,14 +116,14 @@ export default function MovieForm({ movie }) {
           </StyledTextField>
         )}
 
-        <img src={imageURL + "/" + movie.image} />
+        {movie && <img src={imageURL + "/" + movie?.image} />}
         <StyledTextField
           variant="filled"
           label="image"
           type="file"
           focused
           accept="image/png"
-          {...register("image", { required: movie.id ? false : true })}
+          {...register("image", { required: movie?.id ? false : true })}
           error={!!errors.image}
           helperText={errors.image && "This field is required"}
         />

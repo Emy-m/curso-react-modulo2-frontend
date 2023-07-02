@@ -13,9 +13,13 @@ import { useNavigate } from "react-router-dom";
 
 Movie.propTypes = {
   movie: PropTypes.object,
+  onDelete: PropTypes.func,
 };
 
-export default function Movie({ movie: { id, title, year, genre, image } }) {
+export default function Movie({
+  movie: { id, title, year, genre, image },
+  onDelete,
+}) {
   const [img, setImg] = useState(null);
   const nav = useNavigate();
   const movieModel = new MovieModel();
@@ -32,7 +36,7 @@ export default function Movie({ movie: { id, title, year, genre, image } }) {
 
   return (
     <Card sx={{ maxWidth: 345, background: "#505050", color: "white" }}>
-      <CardMedia sx={{ height: 140 }} image={img} title="green iguana" />
+      {img && <CardMedia sx={{ height: 140 }} image={img} title={title} />}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
@@ -52,6 +56,16 @@ export default function Movie({ movie: { id, title, year, genre, image } }) {
           }}
         >
           Details
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => {
+            onDelete(id);
+          }}
+          fullWidth
+        >
+          Delete
         </Button>
       </CardActions>
     </Card>
