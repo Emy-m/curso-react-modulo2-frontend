@@ -1,12 +1,46 @@
-import { useParams, Outlet } from "react-router";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import MovieModel from "../../MovieModel";
+import MovieFormSkeleton from "./MovieFormSkeleton";
+import MovieForm from "./MovieForm";
 
 export default function UpdateMovie() {
   const { id } = useParams();
-  console.log(id);
-  return (
-    <>
-      <div>UpdateMovie</div>
-      <Outlet />
-    </>
+  const [loading, setLoading] = useState(true);
+  const [movie, setMovie] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    try {
+      setLoading(true);
+      setMovie([]);
+      setError(null);
+
+      const movieModel = new MovieModel();
+      movieModel
+        .getMovie(id)
+        .then((m) => {
+          if (!m.error) {
+            setMovie(m);
+          } else {
+            return new Promise((resolve, reject) => reject(m));
+          }
+        })
+        .catch((e) => {
+          setError(e.message + " " + e.error);
+        });
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return loading ? (
+    <MovieFormSkeleton />
+  ) : error ? (
+    <>{error}</>
+  ) : (
+    movie.map((m) => <MovieForm key={m.id} movie={m} />)
   );
 }
