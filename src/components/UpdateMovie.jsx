@@ -26,8 +26,12 @@ export default function UpdateMovie() {
             return new Promise((resolve, reject) => reject(m));
           }
         })
-        .catch((e) => {
-          setError(e.message + " " + e.error);
+        .catch((error) => {
+          if (error.error) {
+            setError(error.message + " " + error.error);
+          } else {
+            setError(error.toString());
+          }
         });
     } catch (error) {
       setError(error);

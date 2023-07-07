@@ -37,10 +37,17 @@ export default function AllMovies({ filter }) {
     } catch (error) {
       if (!signal.aborted) {
         setMovies([]);
-        setError(error);
+
+        if (error.error) {
+          setError(error.message + " " + error.error);
+        } else {
+          setError(error.toString());
+        }
       }
     } finally {
-      setLoading(false);
+      if (!signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
@@ -71,7 +78,9 @@ export default function AllMovies({ filter }) {
     });
   };
 
-  const renderError = () => {};
+  const renderError = () => {
+    return <>{error}</>;
+  };
 
   const renderMovies = () => {
     return movies.map((movie) => {

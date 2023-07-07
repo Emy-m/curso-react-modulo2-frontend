@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, MenuItem, Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
+import MovieFormSkeleton from "./MovieFormSkeleton";
 
 MovieForm.propTypes = {
   movie: PropTypes.object,
@@ -33,18 +34,29 @@ export default function MovieForm({ movie }) {
   } = useForm();
   const nav = useNavigate();
   const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getGenres();
   }, []);
 
-  const getGenres = async () => {
+  const getGenres = () => {
     const movieModel = new MovieModel();
-    const response = await movieModel.getAllGenres();
-
-    if (response && response.length > 0) {
-      setGenres(response);
-    }
+    movieModel
+      .getAllGenres()
+      .then((data) => {
+        setGenres(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (error.error) {
+          setError(error.message + " " + error.error);
+        } else {
+          setError(error.toString());
+        }
+        setLoading(false);
+      });
   };
 
   const onSubmit = (data) => {
@@ -69,7 +81,11 @@ export default function MovieForm({ movie }) {
     }
   };
 
-  return (
+  return loading ? (
+    <MovieFormSkeleton />
+  ) : error ? (
+    <>{error}</>
+  ) : (
     <Box
       component="form"
       noValidate
